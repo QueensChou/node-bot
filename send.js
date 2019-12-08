@@ -24,13 +24,13 @@ function Send(){
 	}
 	this.sendMsg = function(){
 		var reqcq = http.request(options, (res) => {
-		  res.setEncoding('utf8');
-		  res.on('data', (chunk) => {
-		    console.log('响应主体:' + chunk);
-		  });
-		  res.on('end', () => {
-		    console.log('响应中已无数据');
-		  });
+			res.setEncoding('utf8');
+			res.on('data', (chunk) => {
+				console.log('响应主体:' + chunk);
+			});
+			res.on('end', () => {
+				console.log('响应中已无数据');
+			});
 		});
 		
 		reqcq.on('error', (e) => {

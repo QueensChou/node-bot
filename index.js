@@ -9,6 +9,7 @@ var cqdata = '';
 var msg = '';
 var endDice = false;
 var dicedata;
+var spoils;
  
 http.createServer(function(req, res){
     // 定义了一个post变量，用于暂存请求体的信息
@@ -23,18 +24,20 @@ http.createServer(function(req, res){
     req.on('end', function(){    
 		cqdata = JSON.parse(post);
 		var message = cqdata.raw_message;
-		if (message == '/战利品' || message == '/需求') {
-			seals.setData(cqdata);
+		if (message.indexOf('/战利品') != -1 || message == '/需求') {
+			message = message.split(" ");
+			seals.setData(cqdata,message);
 			msg = seals.sendMsg();
-			console.log(msg);
-			console.log(seals.dice);
+			// console.log(msg);
 			if(typeof msg != 'string'){
 				endDice = msg.enddice;
 				dicedata = msg.diceData;
+				spoils = msg.spoils;
 				msg = msg.message;
+				// console.log(dicedata);
 			}
 			var cqmsg = [];
-			if(message == '/战利品'){
+			if(message[0] == '/战利品'){
 				cqmsg = [{
 					"type": "text",
 					"data": {
@@ -57,6 +60,8 @@ http.createServer(function(req, res){
 			send.setData(cqmsg,cqdata);
 			send.sendMsg();
 			if(endDice){
+				var winner;
+				var piont = 0;
 				cqmsg = [];
 				for(id in dicedata){
 					cqmsg.push({
@@ -68,12 +73,30 @@ http.createServer(function(req, res){
 					cqmsg.push({
 						"type": "text",
 						"data": {
-							"text": "对椒盐海豹掷出了" + dicedata.id + "点!\n"
+							"text": "对" + spoils + "掷出了" + dicedata[id] + "点!\n"
 						}
 					});
+					var dicepiont = parseInt(dicedata[id]);
+					console.log(dicepiont + 'and' + piont);
+					if(dicepiont > piont){
+						piont = dicepiont;
+						winner = id;
+					}
 				}
+				cqmsg.push({
+					"type": "at",
+					"data": {
+						"qq": winner
+					}
+				},{
+					"type": "text",
+					"data": {
+						"text": "获得了" + spoils + "!"
+					}
+				})
 				send.setData(cqmsg,cqdata);
 				send.sendMsg();
+				endDice = false;
 			}
 		}
     });
