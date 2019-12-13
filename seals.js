@@ -5,13 +5,22 @@ function Seals(){
 	var dice;
 	// 是否已有掷骰内容
 	var seals = false;
+	// 接收数据
 	var cqdata;
+	// 发送的消息
 	var msg;
+	// 已有数据长度
 	var dice_lenght;
+	// 物品
 	var spoils;
+	// 命令
 	var order;
+	// 参与人数
 	var p_number;
+	// 倒计时
 	var timer;
+	
+	// 数据解析
 	this.setData = function(data,msg){
 		cqdata = data;
 		if(msg[0] == '/战利品'){
@@ -52,6 +61,8 @@ function Seals(){
 			order = '/需求';
 		}
 	}
+	
+	// roll点功能
 	this.Dice = function(){
 		var user_id = cqdata.user_id;
 		dice_lenght = 0;
@@ -105,6 +116,8 @@ function Seals(){
 			msg = '对' + spoils + '进行了掷骰!';
 		}
 	}
+	
+	// 处理消息
 	this.sendMsg = function(){
 		// console.log(cqdata);
 		// var message = cqdata.raw_message;
@@ -114,10 +127,8 @@ function Seals(){
 					msg = '获得了新的战利品:' + spoils + ',请输入"/需求"进行掷骰!';
 					seals = true;
 					timer =setTimeout(endDice,60000);
-					return msg;
 				} else{
 					msg = '已有战利品:' + spoils + ',输入"/需求"进行掷骰!';
-					return msg;
 				}
 				break;
 			case '/需求':
@@ -136,21 +147,17 @@ function Seals(){
 						dice = undefined;
 						dice_lenght = 0;
 						clearTimeout(timer);
-						return msg;
-					}else{
-						return msg;
 					}
 				} else{
-					msg = '没有战利品,输入"/战利品"获取!';
-					return msg;
+					msg = '没有战利品,请输入"/战利品 物品 人数"或"物品"和"人数"留空!';
 				}
 				break;
 			default:
 				msg = '参数错误,请输入"/战利品 物品 人数"或"物品"和"人数"留空!';
-				return msg;
 				break;
 		}
 	}
+	
 	function endDice(){
 		var cqmsg = [];
 		if(dice_lenght){
