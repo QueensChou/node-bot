@@ -5,6 +5,10 @@ var querystring = require('querystring')
 var Seals = require('./seals');
 seals = new Seals();
 
+// 幻化模块
+var Magic = require('./magic');
+magic = new Magic();
+
 // cq传入的数据
 var cqdata = '';
  
@@ -20,12 +24,21 @@ http.createServer(function(req, res){
     // 在end事件触发后，通过querystring.parse将post解析为真正的POST请求格式，然后向客户端返回。
     req.on('end', function(){    
 		cqdata = JSON.parse(post);
+		console.log(cqdata);
+		var sendMsg = '';
 		var message = cqdata.raw_message.split(" ");
 		// roll海豹功能,跳转seals模块
-		if (message[0] == '/战利品' || message[0] == '/需求') {
-			seals.setData(cqdata,message);
-			seals.sendMsg();
+		if (message[0] == '.战利品' || message[0] == '.需求') {
+			// seals.setData(cqdata,message);
+			// seals.sendMsg();
+			sendMsg = {
+				"reply":"收到消息啦!"
+			}
+		}else if(message[0] == '.幻化'){
+			magic.getMagic();
 		}
+		var postData = JSON.stringify(sendMsg);
+		res.end(postData);
     });
 }).listen(8888);
 
