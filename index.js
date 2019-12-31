@@ -35,10 +35,14 @@ http.createServer(function(req, res){
 				"reply":"收到消息啦!"
 			}
 		}else if(message[0] == '.幻化'){
-			magic.getMagic();
+			magic.getMagic( result => {
+				console.log(result + "index");
+				sendMsg = result;
+				var postData = JSON.stringify(sendMsg);
+				res.end(postData);
+			})
+			console.log(sendMsg + "index");
 		}
-		var postData = JSON.stringify(sendMsg);
-		res.end(postData);
     });
 }).listen(8888);
 

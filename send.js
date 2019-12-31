@@ -13,7 +13,7 @@ function Send(){
 		postData = JSON.stringify(send_data);
 		options = {
 		  hostname: '127.0.0.1',
-		  port: 5700,
+		  port: 8888,
 		  path: '/send_group_msg',
 		  method: 'POST',
 		  headers: {
