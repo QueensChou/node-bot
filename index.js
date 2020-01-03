@@ -9,6 +9,10 @@ seals = new Seals();
 var Magic = require('./magic');
 magic = new Magic();
 
+// 幻化模块
+var Fish = require('./fish');
+fish = new Fish();
+
 // cq传入的数据
 var cqdata = '';
  
@@ -36,12 +40,19 @@ http.createServer(function(req, res){
 			}
 		}else if(message[0] == '.幻化'){
 			magic.getMagic( result => {
-				console.log(result + "index");
+				// console.log(result + "index");
 				sendMsg = result;
 				var postData = JSON.stringify(sendMsg);
 				res.end(postData);
 			})
-			console.log(sendMsg + "index");
+		}else if(message[0] == '.fish'){
+			fish.setData(cqdata,message);
+			fish.getFish( result => {
+				// console.log(result + "index");
+				sendMsg = result;
+				var postData = JSON.stringify(sendMsg);
+				res.end(postData);
+			})
 		}
     });
 }).listen(8888);
