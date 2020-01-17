@@ -39,54 +39,64 @@ http.createServer(function(req, res){
 		cqdata = JSON.parse(post);
 		// console.log(cqdata);
 		var sendMsg = '';
-		var message = cqdata.raw_message.split(" ");
-		// roll海豹功能,跳转seals模块
-		if (message[0] == '.战利品' || message[0] == '.需求') {
-			// seals.setData(cqdata,message);
-			// seals.sendMsg();
-			sendMsg = {
-				"reply":"收到消息啦!"
-			}
-		}else if(message[0] == '.幻化'){
-			magic.getMagic( result => {
-				// console.log(result + "index");
-				sendMsg = result;
-				var postData = JSON.stringify(sendMsg);
-				res.end(postData);
-			})
-		}else if(message[0] == '.fish'){
-			fish.setData(cqdata,message);
-			fish.getFish( result => {
-				// console.log(result + "index");
-				sendMsg = result;
-				var postData = JSON.stringify(sendMsg);
-				res.end(postData);
-			})
-		}else if(message[0] == '.talk'){
-			talk.setData(cqdata,message);
-			talk.addDate( result => {
-				// console.log(result + "index");
-				sendMsg = result;
-				var postData = JSON.stringify(sendMsg);
-				res.end(postData);
-			})
-		}else{
-			var numbers = Math.floor(Math.random()*100);
-			fs.readFile('prob.json', function (err, data) {
-				if (err) {
-					return console.error(err);
+		if(cqdata.raw_message){
+			var message = cqdata.raw_message.split(" ");
+			// roll海豹功能,跳转seals模块
+			if (message[0] == '.战利品' || message[0] == '.需求') {
+				// seals.setData(cqdata,message);
+				// seals.sendMsg();
+				sendMsg = {
+					"reply":"收到消息啦!"
 				}
-				data = JSON.parse(data);
-				if(numbers < data.prob){
-					reply.setData(cqdata,message);
-					reply.sendTalk( result => {
+			}else if(message[0] == '.幻化'){
+				magic.getMagic( result => {
+					// console.log(result + "index");
+					sendMsg = result;
+					var postData = JSON.stringify(sendMsg);
+					res.end(postData);
+				})
+			}else if(message[0] == '.fish'){
+				fish.setData(cqdata,message);
+				fish.getFish( result => {
+					// console.log(result + "index");
+					sendMsg = result;
+					var postData = JSON.stringify(sendMsg);
+					res.end(postData);
+				})
+			}else if(message[0] == '.talk'){
+				if (cqdata.user_id == 2107632131){
+					sendMsg = {
+						"reply":"你无权添加数据!"
+					};
+					var postData = JSON.stringify(sendMsg);
+					res.end(postData);
+				}else{
+					talk.setData(cqdata,message);
+					talk.addDate( result => {
 						// console.log(result + "index");
 						sendMsg = result;
 						var postData = JSON.stringify(sendMsg);
 						res.end(postData);
 					})
 				}
-			})
+			}else{
+				var numbers = Math.floor(Math.random()*100);
+				fs.readFile('prob.json', function (err, data) {
+					if (err) {
+						return console.error(err);
+					}
+					data = JSON.parse(data);
+					if(numbers < data.prob){
+						reply.setData(cqdata,message);
+						reply.sendTalk( result => {
+							// console.log(result + "index");
+							sendMsg = result;
+							var postData = JSON.stringify(sendMsg);
+							res.end(postData);
+						})
+					}
+				})
+			}
 		}
     });
 }).listen(8888);

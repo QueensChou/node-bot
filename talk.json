@@ -5,7 +5,18 @@
 			"sentWord": [
 				{
 					"dialogue": "这是一条测试语句",
+					"atqq": 0,
 					"setqq": "10000"
+				}
+			]
+		},
+		{
+			"getWord": "龙王",
+			"sentWord": [
+				{
+					"dialogue": "龙王出来喷水！",
+					"atqq": 0,
+					"setqq": 419315261
 				}
 			]
 		},
@@ -13,17 +24,19 @@
 			"getWord": "女装",
 			"sentWord": [
 				{
-					"dialogue": "啊呆出来女装啦！",
+					"dialogue": "啊呆出来女装了！",
+					"atqq": 0,
 					"setqq": 419315261
 				}
 			]
 		},
 		{
-			"getWord": "墨白",
+			"getWord": "红包",
 			"sentWord": [
 				{
-					"dialogue": "@墨白",
-					"setqq": 993630407
+					"dialogue": "快出来发红包",
+					"atqq": "2107632131",
+					"setqq": 419315261
 				}
 			]
 		}

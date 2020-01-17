@@ -8,6 +8,7 @@ function Reply(){
 	}
 	
 	this.sendTalk = function(callback){
+		// console.log(11111);
 		fs.readFile('talk.json', function (err, data) {
 			if (err) {
 				return console.error(err);
@@ -18,14 +19,37 @@ function Reply(){
 				if(getMsg.indexOf(wordData[i].getWord) !== -1){
 					var sentData = wordData[i].sentWord;
 					sentData.sort(function(a, b){return 0.5 - Math.random()}); 
-					sendMsg = {
-						"reply": sentData[0].dialogue,
-						"at_sender":false
+					if(sentData[0].atqq){
+						// console.log(333333);
+						sendMsg = {
+							"reply": [
+								{
+									"type": "at",
+									"data": {
+										"qq": sentData[0].atqq
+									}
+								},
+								{
+									"type": "text",
+									"data": {"text": sentData[0].dialogue}
+								}
+							],
+							"at_sender":false,
+							"auto_escape":true
+						}
+					}else{
+						// console.log(444444);
+						sendMsg = {
+							"reply": sentData[0].dialogue,
+							"at_sender":false,
+						}
 					}
 					return callback(sendMsg);
 					break;
 				}
 			}
+			// console.log("other");
+			return callback(0);
 		})
 	}
 }
