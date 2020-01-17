@@ -1,0 +1,31 @@
+{
+	"total": [
+		{
+			"getWord": "测试",
+			"sentWord": [
+				{
+					"dialogue": "这是一条测试语句",
+					"setqq": "10000"
+				}
+			]
+		},
+		{
+			"getWord": "女装",
+			"sentWord": [
+				{
+					"dialogue": "啊呆出来女装啦！",
+					"setqq": 419315261
+				}
+			]
+		},
+		{
+			"getWord": "墨白",
+			"sentWord": [
+				{
+					"dialogue": "@墨白",
+					"setqq": 993630407
+				}
+			]
+		}
+	]
+}
